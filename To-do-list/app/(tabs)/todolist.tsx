@@ -1,10 +1,7 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, TextInput } from 'react-native';
+import {StyleSheet, TextInput } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Crypto from 'expo-crypto';
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { View } from 'react-native';
 import { useState } from 'react';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -25,6 +22,7 @@ type Task = {
 };
 const genId = () => Crypto.randomUUID();
 export default function TodoList() {
+const [taskName, setTaskName] = useState('');
 const [tasks, setTasks] = useState<Task[]>([
   {
     id: genId(),
@@ -59,9 +57,37 @@ const [tasks, setTasks] = useState<Task[]>([
     icon: 'briefcase.fill',
   },
 ]);
+// function addTask() {
+//   if (taskName.trim() === '') return; // ignore empty input
+
+//   const newTask = {
+//     id: Crypto.randomUUID(),
+//     name: taskName,
+//     isDone: false,
+//     priority: 'low',
+//     icon: 'list.bullet',
+//   };
+
+//   setTasks((prev) => [...prev, newTask]);
+//   setTaskName(''); // clear input
+// }
+function addTask() {
+  setTasks(prev => [
+    ...prev,
+    {
+      id: Crypto.randomUUID(),        
+      name: taskName,
+      isDone: false,
+      priority: 'low',
+      icon: 'list.bullet',
+    },
+  ]);
+  setTaskName('');
+  alert(taskName)
+}
 
   return (
-    <ThemedView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText
           type="title"
@@ -74,7 +100,7 @@ const [tasks, setTasks] = useState<Task[]>([
       <FlatList data={tasks} keyExtractor={(item)=> item.id.toString()} renderItem={({item})=> (
           <ThemedView style={styles.todoContainer}>
             <ThemedView style={styles.todoInfoContainer}>
-              <IconSymbol size={28} name={(item.icon as IconSymbolName) || 'paperplane.fill'} color={'black'}/>
+              <IconSymbol size={28} name={(item.icon as IconSymbolName)} color={'black'}/>
               <ThemedText>{item.name}</ThemedText>
             </ThemedView>
              <Checkbox value={item.isDone}/>
@@ -83,18 +109,19 @@ const [tasks, setTasks] = useState<Task[]>([
         )}
       />
       <ThemedView style={styles.addContainer}>
-        <TextInput style={styles.addText} placeholder='Add a new task...'/>
-        <TouchableOpacity onPress={()=>{}}>
+        <TextInput style={styles.addText} placeholder='Add a new task...' value={taskName} onChangeText={setTaskName}/>
+        <TouchableOpacity onPress={addTask}>
           <IconSymbol size={28} name={'plus.app.fill'} color={'#1a9585ff'}/>
         </TouchableOpacity>
       </ThemedView>
-    </ThemedView>)
+    </SafeAreaView>)
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    backgroundColor:'#845f85ff'
+    backgroundColor:'#fff',
+    flex: 1
   },
   titleContainer: {
     flexDirection: 'row',
@@ -130,3 +157,4 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 });
+
