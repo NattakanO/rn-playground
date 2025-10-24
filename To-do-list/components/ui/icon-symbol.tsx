@@ -19,7 +19,13 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'list.bullet':'list',
-  'plus.app.fill': 'add-box'
+  'plus.app.fill': 'add-box',
+  'frying.pan.fill': 'rice-bowl',
+  'text.book.closed.fill': 'book',
+  'dumbbell.fill': 'sports-basketball',
+  'briefcase.fill': 'work',
+  'xmark.bin.fill':'cleaning-services'
+
 } as IconMapping;
 // paperplane.fill for ios but send icon for android <MaterialIcons name="send" color={color} />
 /**

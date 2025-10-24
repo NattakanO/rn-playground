@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet, TextInput } from 'react-native';
-import { v4 as uuidv4 } from 'uuid';
+import * as Crypto from 'expo-crypto';
 import { Collapsible } from '@/components/ui/collapsible';
 import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -23,55 +23,45 @@ type Task = {
   priority?: 'low' | 'medium' | 'high';
   icon?: string;        
 };
+const genId = () => Crypto.randomUUID();
 export default function TodoList() {
-
 const [tasks, setTasks] = useState<Task[]>([
   {
-    id: uuidv4(),
+    id: genId(),
     name: 'Finish React Native project',
     isDone: false,
     deadline: '2025-10-25',
     priority: 'high',
-    icon: 'paperplane.fill',
+    icon: 'text.book.closed.fill',
   },
   {
-    id: uuidv4(),
+    id: genId(),
     name: 'Cooking',
     isDone: false,
     deadline: '2025-10-25',
     priority: 'low',
-    icon: 'paperplane.fill',
+    icon: 'frying.pan.fill',
   },
   {
-    id: uuidv4(),
+    id: genId(),
     name: 'Cleaning a bedroom',
     isDone: false,
     deadline: '2025-10-25',
     priority: 'high',
-    icon: 'paperplane.fill',
+    icon: 'xmark.bin.fill',
   },
   {
-    id: uuidv4(),
+    id: genId(),
     name: 'Finish SIT789 assignment',
     isDone: true,
     deadline: '2025-10-25',
     priority: 'high',
-    icon: 'paperplane.fill',
+    icon: 'briefcase.fill',
   },
 ]);
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }
-      >
+    <ThemedView style={styles.container}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText
           type="title"
@@ -98,17 +88,13 @@ const [tasks, setTasks] = useState<Task[]>([
           <IconSymbol size={28} name={'plus.app.fill'} color={'#1a9585ff'}/>
         </TouchableOpacity>
       </ThemedView>
-      
-    </ParallaxScrollView>
-  );
+    </ThemedView>)
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    padding: 20,
+    backgroundColor:'#845f85ff'
   },
   titleContainer: {
     flexDirection: 'row',
@@ -125,6 +111,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
+    elevation: 5,
   },
   todoInfoContainer: {
     flexDirection: 'row',
